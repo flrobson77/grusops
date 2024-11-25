@@ -1,6 +1,13 @@
 #!/usr/bin/python3
 
+#VERIFICA TAREFAS REALIZADAS NA ATIVIDADE AMBIENTE DO DESENVOLVEDOR
+#SISTEMAS OPERACIONAIS 
+#SCRIPT ELABORADO POR PROF. ROBSON
+#COM APOIO DA INTELIGENCIA ARTIFICIAL
+##EM 25/11/2024
+
 import subprocess
+import time
 
 # Executa o comando do terminal
 def run_command(command):
@@ -9,15 +16,6 @@ def run_command(command):
         return result.strip()
     except subprocess.CalledProcessError as e:
         return f"Erro ao executar o comando: {e.output}"
-
-# Função para verificar se um serviço está ativo
-def check_service(service_name):
-    command = f"systemctl is-active {service_name}"
-    result = run_command(command)
-    if result == "active":
-        return f"{service_name}  ...RODANDO."
-    else:
-        return f"{service_name} ...PARADO."
 
 # Teste o comando do terminal (exemplo: 'apache2 -v' ou 'httpd -v')
 def check_apache():
@@ -77,6 +75,13 @@ def check_docker():
         return True
     else:
         return False
+def check_hello():
+    command = "docker image ls"  # Altere conforme o comando que você quer testar
+    result = run_command(command)
+    if "hello-world" in result:
+        return True
+    else:
+        return False
 
 def check_compose():
     command = "docker-compose --version"  # Altere conforme o comando que você quer testar
@@ -115,94 +120,117 @@ def check_dev():
     else:
         return False
 
+# Verificar se o phpMyAdmin está acessível
+def check_link():
+    command = "ls -l /home/developer | grep projetos"
+    result = run_command(command)
+    if "projetos" in result:
+        return True
+    else:
+        return False
+
 
 def main():
     score = 0
     username = "developer"
+     
+    student = input("Por favor, informe seu nome: ")
 
-    # Verificar serviços
-    print("\nVERIFICANDO SERVIÇOS EM EXECUÇÃO...\n")
-    
-    # Verificar o status do Apache
-    print(check_service("apache2"))
-    
-    # Verificar o status do MariaDB
-    print(check_service("mariadb"))
-    
-    # Verificar o status do Docker
-    print(check_service("docker"))
-    
+    print(f"\nBem-vindo, {student}!")
+    print(f"\nPONTUAÇÂO INICIAL: {score} PONTO\n")
 
-    print(f"\nPontuação inicial: {score} pontos\n")
-    print("VERIFICANDO AS CONFIGURACOES E SOMANDO PONTOS\n")
+    print(f"{student}, CHECANDO SUAS CONFIGURACOES E SOMANDO PONTOS\n")
     if check_apache():
-        print("SERVICO WEB.......OK")
+        print("SERVICO WEB..........OK")
         score += 100
     else:
-        print("SERVICO WEB.......NO")
+        print("SERVICO WEB..........NO")
 
     if check_php():
-        print("PHP...............OK")
+        print("PHP..................OK")
         score += 50
     else:
-        print("PHP...............NO")
+        print("PHP..................NO")
 
     if check_maria():
-        print("MARIADB...........OK")
+        print("MARIADB..............OK")
         score += 150
     else:
-        print("MARIADB...........NO")
+        print("MARIADB..............NO")
 
     if check_maria_user(username):
-        print(f"USER:{username}....YES")
+        print(f"USER:{username}.......YES")
         score += 200
     else:
-        print(f"{username}....NO")
+        print(f"{username}.......NO")
 
     if check_docker():
-        print("Docker............OK")
+        print("DOCKER...............OK")
+        score += 100
+    else:
+        print("DOCKER...............NO")
+
+    if check_hello():
+        print("CONTAINER HELLO......OK")
         score += 200
     else:
-        print("Docker............NO")
+        print("CONTAINER HELLO......NO")
 
     if check_compose():
-        print("Compose...........OK")
+        print("DOCKER COMPOSE.......OK")
         score += 200
     else:
-        print("Compose...........NO")
+        print("DOCKER COMPOSE.......NO")
 
     if check_vscode():
-        print("VSCODE............OK")
+        print("IDE VSCODE...........OK")
         score += 200
     else:
-        print("VSCODE............NO")
+        print("IDE VSCODE...........NO")
 
     if check_phpmyadmin():
-        print("PHPMYADMIN........OK")
+        print("PHPMYADMIN...........OK")
         score += 200
     else:
-        print("PHPMYADMIN........NO")
+        print("PHPMYADMIN...........NO")
 
     if check_shine():
-        print("SHINEMODAS........OK")
-        score += 300
+        print("SHINEMODAS...........OK")
+        score += 200
     else:
-        print("SHINEMODAS........NO")
+        print("SHINEMODAS...........NO")
 
     if check_www():
-        print("/var/www .........OK")
+        print("WWW_DATA /VAR/WWW ...OK")
         score += 200
     else:
-        print("/var/www .........NO")
+        print("WWW-DATA /VAR/WWW ...NO")
 
     if check_dev():
-        print("Diretorio DEV ....OK")
-        score += 200
+        print("DIRETORIO DEV .......OK")
+        score += 100
     else:
-        print("Diretorio DEV ....NO")
+        print("DIRETORIO DEV .......NO")
 
-    print(f"\nPONTUAÇÃO COMPUTADA: {score} pontos")
+    if check_link():
+        print("Link PROJETOS .......OK")
+        score += 100
+    else:
+        print("Link PROJETOS .......NO")
+
+    print("\nAguarde enquanto calculamos sua pontuação...\n")
+    time.sleep(2)  # Pausa de 2 segundos para criar suspense
+
+    print("SOMANDO ACERTOS...")
+    time.sleep(3)  # Pausa de 1 segundo para manter o suspense
+
+    print("PONTUAÇÃO FINAL: ", end="", flush=True)
+    time.sleep(3)  # Pausa para suspense
+    for digit in str(score):
+        print(digit, end="", flush=True)
+        time.sleep(0.5)  # Pausa de 0.3 segundos entre cada dígito
+
+    print(f"\n\nMissão dada é missão cumprida!, \n\n{student}, PARABÉNS!!!")
 
 if __name__ == "__main__":
     main()
-
